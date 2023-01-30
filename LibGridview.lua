@@ -86,7 +86,6 @@ gridview:Insert(item)
 
 
 
-
 GridviewMixin = {}
 function GridviewMixin:OnLoad()
     self.data = {}
