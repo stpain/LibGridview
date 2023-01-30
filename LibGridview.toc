@@ -1,4 +1,4 @@
 ## Name: LibGridview
 ## Interface: 30401
-## Version: 0.4
+## Version: 0.5
 ## Notes: Make Gridviews
