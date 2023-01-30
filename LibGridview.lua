@@ -20,7 +20,73 @@ frames added can use the following methods
 
 specifically of note is that :UpdateLayout will be called on each frame when calling :UpdateLayout on the gridview itself
 
+
+==========================================================================================================================
+example snippet
+
+
+========
+foo.xml
+========
+-- create a template for gridview items, this is best (and mostly only) done with xml
+-- add the mixin attribute to your template
+<Ui>
+    <Frame name="MyGridviewItemTemplate" mixin="MyGridviewItemMixin" virtual="true">
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString parentKey="title"/>
+            </Layer>
+        </Layers>
+    </Frame>
+</Ui>
+
+
+========
+foo.lua
+========
+-- in a lua file write the template mixin and add the method to set binding
+MyGridviewItemMixin = {}
+function MyGridviewItemMixin:SetDataBinding(binding)
+    self.title:SetText(binding.title)
+end
+
+
+========
+main.lua
+========
+local name, addon = ...;
+
+-- get a ref to the lib
+local LibGridview = addon.LibGridview;
+
+-- create the gridview
+local gridview = LibGridview:CreateGridview(parent)
+
+-- init the frame pool passing in the frame type and template name
+gridview:InitFramePool("FRAME", "GridviewItemTemplate")
+
+-- set the min/max item sizes (this is isnt exactly perfect science as the gridview will size items to best fit the full width)
+gridview:SetMinMaxSize(300, 400)
+
+-- create an item to add
+local item = {
+    title = "foo",
+}
+
+-- add the item to the gridview
+gridview:Insert(item)
+==========================================================================================================================
+
+
 ]]
+
+
+
+
+
+
+
+
 GridviewMixin = {}
 function GridviewMixin:OnLoad()
     self.data = {}
@@ -40,7 +106,7 @@ function GridviewMixin:InitFramePool(type, template)
     self.framePool = CreateFramePool(type, self.scrollChild, template);
 end
 
----set the size for the gridview items, note this doesnt provide an accurate size but allow sthe gridview to work out how many items per row to display
+---set the size for the gridview items, note this doesnt provide an accurate size but allows the gridview to work out how many items per row to display
 ---@param min number
 ---@param max number
 function GridviewMixin:SetMinMaxSize(min, max)
